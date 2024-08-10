@@ -9,15 +9,23 @@ function SendMessageContainer() {
   const dispatch = useDispatch();
   const [message, setMessage] = useState(initialMessage);
 
-  const handleSubmit = async () => {
-    dispatch(addMessage(message));
+  const handleKeyPress = async (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      await handleSubmit();
+    }
+  };
 
-    const answer = await getResponse(message);
+  const handleSubmit = async () => {
+    console.log("submitted");
 
     setMessage({
       role: "user",
       content: "",
     });
+
+    dispatch(addMessage(message));
+
+    const answer = await getResponse(message);
 
     dispatch(addMessage(answer));
   };
@@ -27,11 +35,12 @@ function SendMessageContainer() {
       {/* Input Field */}
       <div className="bg-secondary flex flex-row rounded-xl p-3 w-full h-auto">
         <textarea
+          onKeyDown={handleKeyPress}
           id="chatMessageBox"
           className="bg-secondary outline-none w-full rounded-md resize-none overflow-hidden"
           rows="1"
           placeholder="Type your message..."
-          value={message.message}
+          value={message.content}
           onChange={(e) => setMessage({ ...message, content: e.target.value })}
           style={{ maxHeight: "12rem" }}
         ></textarea>

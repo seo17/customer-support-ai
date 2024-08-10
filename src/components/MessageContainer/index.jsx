@@ -1,13 +1,21 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 function MessageContainer() {
-  const [messages, setMessages] = useState([]);
-
   const getMessages = useSelector((state) => {
     return state.allMessages;
   });
+
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [getMessages]);
 
   return (
     <div className="w-full h-full overflow-auto">
@@ -37,6 +45,7 @@ function MessageContainer() {
             </div>
           )
         )}
+        <div ref={messagesEndRef} />
       </div>
     </div>
   );

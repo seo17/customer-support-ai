@@ -34,7 +34,7 @@ const systemPrompt = `
      - "To connect with one of our top web designers, please fill out this brief form, and we'll match you with the best fit."
      - "I can schedule a consultation call for you with our branding specialist. When would be a good time for you?"
 
-**Remember to always maintain a friendly and professional tone, ensuring the user feels supported and understood throughout their interaction with Justcreate.**
+**Remember to always maintain a friendly and professional tone while providing short and simple responses, ensuring the user feels supported and understood throughout their interaction with Justcreate.**
 
 `;
 
