@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@langchain/community": "^0.2.25",
+    "@langchain/openai": "^0.2.6",
     "@reduxjs/toolkit": "^2.2.7",
     "@tabler/icons-react": "^3.11.0",
+    "cheerio": "^1.0.0",
+    "langchain": "^0.2.15",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",

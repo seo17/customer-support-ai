@@ -1,9 +1,9 @@
 "use client";
-import { getResponse } from "@/actions";
+import { getResponse, ragResponse } from "@/actions";
 import { icons, initialMessage, messagesArray } from "@/common";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addMessage } from "@/features/message/message";
+import { useDispatch, useSelector } from "react-redux";
+import { addMessage, replaceMessage } from "@/features/message/message";
 
 function SendMessageContainer() {
   const dispatch = useDispatch();
@@ -18,15 +18,19 @@ function SendMessageContainer() {
   const handleSubmit = async () => {
     console.log("submitted");
 
+    // add message to history
+    dispatch(addMessage(message));
+
+    // get A.I response
+    const answer = await getResponse(message);
+
+    // Set user input field to empty
     setMessage({
       role: "user",
       content: "",
     });
 
-    dispatch(addMessage(message));
-
-    const answer = await getResponse(message);
-
+    // add A.I message to history
     dispatch(addMessage(answer));
   };
 

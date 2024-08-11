@@ -1,4 +1,18 @@
 "use server";
+import "cheerio";
+import { CheerioWebBaseLoader } from "@langchain/community/document_loaders/web/cheerio";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
+import { pull } from "langchain/hub";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
+import { formatDocumentsAsString } from "langchain/util/document";
+import {
+  RunnableSequence,
+  RunnablePassthrough,
+} from "@langchain/core/runnables";
 
 const systemPrompt = `
 
@@ -57,4 +71,53 @@ export async function getResponse(userMessage) {
   const data = await response.json();
 
   return data.choices[0].message;
+}
+
+export async function ragResponse(userMessage) {
+  const { content } = userMessage;
+
+  const model = new ChatOpenAI({
+    model: "gpt-4o-mini",
+    temperature: 0,
+  });
+
+  const loader = new CheerioWebBaseLoader(
+    "https://aws.amazon.com/devops/what-is-devops/"
+  );
+
+  const docs = await loader.load();
+
+  const textSplitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200,
+  });
+  const splits = await textSplitter.splitDocuments(docs);
+  const vectorStore = await MemoryVectorStore.fromDocuments(
+    splits,
+    new OpenAIEmbeddings()
+  );
+
+  // Retrieve and generate using the relevant snippets of the blog.
+  const retriever = vectorStore.asRetriever();
+  const prompt = await pull("rlm/rag-prompt");
+  const llm = new ChatOpenAI({ model: "gpt-3.5-turbo", temperature: 0 });
+
+  const ragChain = RunnableSequence.from([
+    {
+      context: retriever.pipe(formatDocumentsAsString),
+      question: new RunnablePassthrough(),
+    },
+    prompt,
+    llm,
+    new StringOutputParser(),
+  ]);
+
+  const context = await retriever.invoke(content);
+  const response = await ragChain.invoke(content, context);
+
+  return { role: "assistant", content: response };
+
+  // for await (const chunk of await ragChain.stream(content)) {
+  //   console.log(chunk);
+  // }
 }
