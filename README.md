@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Customer Support Chatbot
 
-## Getting Started
+This project is an AI-powered customer support chatbot designed to respond to user queries intelligently using OpenAI models. The application is built with Next.js, styled with Tailwind CSS, and utilizes Redux for state management. The project also integrates LangChain to implement Retrieval-Augmented Generation (RAG), enabling the chatbot to provide responses based on a predefined knowledge base.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Basic Chatbot**: A simple chatbot that interacts with users.
+- **Intelligent Responses**: Utilizes OpenAI models to generate meaningful and context-aware responses.
+- **Deployment**: Deploy the web application to AWS EC2 Servers and Vercel for scalable hosting.
+- **RAG Implementation**: Incorporates Retrieval-Augmented Generation to enhance response accuracy based on a given knowledge base.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js, React, Tailwind CSS
+- **State Management**: Redux
+- **AI/ML**: OpenAI API, LangChain
+- **Deployment**: AWS EC2, Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. Clone the repository:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   git clone https://github.com/seo17/samuel-owolabi.git
+   cd samuel-owolabi/AI-Customer-Support-Chatbot
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Install dependencies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. Set up environment variables by creating a `.env.local` file in the root directory and adding your OpenAI API key and other necessary configurations.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Run the development server:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+   ```bash
+   npm run dev
+   ```
+
+5. Build and deploy the app to AWS EC2 Servers or Vercel as per your preference.
+
+## Usage
+
+- Interact with the chatbot by asking questions or making requests.
+- The chatbot will generate responses using the integrated OpenAI model.
+- If RAG is implemented, the chatbot will also use the provided knowledge base to refine its responses.
